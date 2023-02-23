@@ -3,15 +3,19 @@ if(isset($_POST["submit"])) {
     $login = $_POST['login'];
     $password = $_POST['password'];
 
-    $sql = 
-    "SELECT * FROM users WHERE `username`LIKE '$login' AND `pass` LIKE '$password' ";
+    $sql = "SELECT * FROM users WHERE `username`= '$login' ";
 
     $result = $conn->query($sql);
 
     $user = $result->fetch_assoc();
     // var_dump($result);
-
+    if(password_verify($password, $user['pass'])){
     setcookie("user", $user['id'], time()+3600*24, "/");
+    header("Location: /?p=home");
+
+    }else{
+        echo("password or login is wrong");
+    }
 }
 
 ?>
